@@ -1,0 +1,30 @@
+{
+  "name": "bluesourcery/prescription",
+  "description": "Medical prescription package",
+  "type": "library",
+  "license": "proprietary",
+  "authors": [
+    {
+      "name": "Mario Zabala",
+      "email": "mario@bluesourcery.com"
+    }
+  ],
+  "autoload": {
+    "psr-4": {
+      "Bluesourcery\\Prescription\\": "src",
+      "Bluesourcery\\Prescription\\Tests\\": "tests",
+      "Bluesourcery\\Prescription\\Database\\Factories\\": "database\\factories"
+    }
+  },
+  "require-dev": {
+    "orchestra/testbench": "6.0",
+    "phpunit/phpunit": "^9.5"
+  },
+    "extra": {
+      "laravel": {
+          "providers": [
+            "Bluesourcery\\Prescription\\PrescriptionServiceProvider"
+          ]
+      }
+  }
+}
