@@ -26,4 +26,16 @@ Route::prefix('api')->group(function() {
         Route::post('', 'PrescriptionController@create');
         Route::delete('{id}', 'PrescriptionController@delete');
     });
+
+    Route::namespace('Bluesourcery\Prescription\Http\Controllers')
+    ->prefix('drug')
+    ->name('drug.')
+    ->group(function() {
+        Route::get('', 'DrugController@all');
+        Route::get('filter', 'DrugController@filter');
+        Route::get('/{id}', 'DrugController@show');
+        Route::put('/{id}', 'DrugController@update');
+        Route::post('', 'DrugController@create');
+        Route::delete('{id}', 'DrugController@delete');
+    });
 });
