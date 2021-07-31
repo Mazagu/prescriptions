@@ -2,18 +2,16 @@
 
 namespace Bluesourcery\Prescription\Http\Controllers;
 
-use Bluesourcery\Prescription\Domain\Repositories\Patient\PatientRepository;
+use Bluesourcery\Prescription\Domain\Commands\Patient\ListPatients;
+use Bluesourcery\Prescription\Domain\Commands\Patient\FilterPatients;
+use Bluesourcery\Prescription\Domain\Commands\Patient\CreatePatient;
+use Bluesourcery\Prescription\Domain\Commands\Patient\ShowPatient;
+use Bluesourcery\Prescription\Domain\Commands\Patient\UpdatePatient;
+use Bluesourcery\Prescription\Domain\Commands\Patient\DeletePatient;
 use Illuminate\Http\Request;
 
 class PatientController extends Controller
 {
-    protected $repository;
-
-    public function __construct(PatientRepository $repository)
-    {
-        $this->repository = $repository;
-    }
-
     /**
      * Display a listing of patients.
      *
@@ -21,7 +19,7 @@ class PatientController extends Controller
      */
     public function all()
     {
-        return $this->repository->all();
+        return app(ListPatients::class)->execute();
     }
 
     /**
@@ -37,8 +35,7 @@ class PatientController extends Controller
             'lastname' => $request->lastname,
             'id_card' => $request->id_card
         ];
-
-        return $this->repository->filter($filters);
+        return app(FilterPatients::class)->execute($filters);
     }
 
     /**
@@ -50,17 +47,13 @@ class PatientController extends Controller
 
     public function create(Request $request)
     {
-        $request->validate([
-            'name' => 'required|string|min:3|max:255',
-            'lastname' => 'required|string|min:3|max:255',
-            'id_card' => 'required|string|min:3|max:255'
-        ]);
-
-        return $this->repository->create([
-            'name' => $request->name,
-            'lastname' => $request->lastname,
-            'id_card' => $request->id_card
-        ]);
+        return app(CreatePatient::class)->execute(
+            $request->validate([
+                'name' => 'required|string|min:3|max:255',
+                'lastname' => 'required|string|min:3|max:255',
+                'id_card' => 'required|string|min:3|max:255'
+            ])
+        );
     }
 
     /**
@@ -72,7 +65,7 @@ class PatientController extends Controller
      */
     public function show(Request $request, $id)
     {
-        return $this->repository->show($id);
+        return app(ShowPatient::class)->execute(['id' => $id]);
     }
 
     /**
@@ -84,18 +77,13 @@ class PatientController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $request->validate([
+        $parameters = $request->validate([
             'name' => 'string|min:3|max:255',
             'lastname' => 'string|min:3|max:255',
             'id_card' => 'string|min:3|max:255'
         ]);
-
-        $data = [];
-        if($request->name) $data['name'] = $request->name;
-        if($request->lastname) $data['lastname'] = $request->lastname;
-        if($request->id_card) $data['id_card'] = $request->id_card;
-
-        return $this->repository->update($id, $data);
+        $parameters['id'] = $id;
+        return app(UpdatePatient::class)->execute($parameters);
     }
 
     /**
@@ -105,6 +93,6 @@ class PatientController extends Controller
      */
     public function delete(Request $request, $id)
     {
-        return $this->repository->delete($id);
+        return app(DeletePatient::class)->execute(['id' => $id]);
     }
 }

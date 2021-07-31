@@ -24,9 +24,15 @@ class PrescriptionRepository implements RepositoryInterface
 		return $this->prescription->create($prescription);
 	}
 
-	public function update(int $id, Array $prescription) 
+	public function update(Array $prescription) 
 	{
-		return $this->prescription->find($id)->update($prescription);
+		return $this->prescription->find($prescription['id'])->update(array_filter($prescription,
+				function($key, $value) {
+					return $key != 'id' || !empty($value);
+				},
+				ARRAY_FILTER_USE_BOTH
+			)
+		);
 	}
 
 

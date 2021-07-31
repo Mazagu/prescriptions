@@ -24,9 +24,15 @@ class DrugRepository implements RepositoryInterface
 		return $this->drug->create($drug);
 	}
 
-	public function update(int $id, Array $drug) 
+	public function update(Array $drug) 
 	{
-		return $this->drug->find($id)->update($drug);
+		return $this->drug->find($drug['id'])->update(array_filter($drug,
+				function($key, $value) {
+					return $key != 'id' || !empty($value);
+				},
+				ARRAY_FILTER_USE_BOTH
+			)
+		);
 	}
 
 

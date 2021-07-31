@@ -2,18 +2,16 @@
 
 namespace Bluesourcery\Prescription\Http\Controllers;
 
-use Bluesourcery\Prescription\Domain\Repositories\Drug\DrugRepository;
+use Bluesourcery\Prescription\Domain\Commands\Drug\ListDrugs;
+use Bluesourcery\Prescription\Domain\Commands\Drug\FilterDrugs;
+use Bluesourcery\Prescription\Domain\Commands\Drug\CreateDrug;
+use Bluesourcery\Prescription\Domain\Commands\Drug\ShowDrug;
+use Bluesourcery\Prescription\Domain\Commands\Drug\UpdateDrug;
+use Bluesourcery\Prescription\Domain\Commands\Drug\DeleteDrug;
 use Illuminate\Http\Request;
 
 class DrugController extends Controller
 {
-    protected $repository;
-
-    public function __construct(DrugRepository $repository)
-    {
-        $this->repository = $repository;
-    }
-
     /**
      * Display a listing of drugs.
      *
@@ -21,7 +19,7 @@ class DrugController extends Controller
      */
     public function all()
     {
-        return $this->repository->all();
+        return app(ListDrugs::class)->execute();
     }
 
     /**
@@ -33,10 +31,11 @@ class DrugController extends Controller
     public function filter(Request $request)
     {
         $filters = [
+            'name' => $request->name,
+            'code' => $request->code,
             'prescription_id' => $request->prescription_id
         ];
-
-        return $this->repository->filter($filters);
+        return app(FilterDrugs::class)->execute($filters);
     }
 
     /**
@@ -48,19 +47,14 @@ class DrugController extends Controller
 
     public function create(Request $request)
     {
-        $request->validate([
-            'name' => 'required|string|min:3|max:255',
-            'code' => 'required|integer',
-            'posology' => 'required|string|min:3|max:255',
-            'prescription_id' => 'required|integer'
-        ]);
-
-        return $this->repository->create([
-            'name' => $request->name,
-            'code' => $request->code,
-            'posology' => $request->posology,
-            'prescription_id' => $request->prescription_id
-        ]);
+        return app(CreateDrug::class)->execute(
+            $request->validate([
+                'name' => 'required|string|min:3|max:255',
+                'code' => 'required|integer',
+                'posology' => 'required|string|min:3|max:255',
+                'prescription_id' => 'required|integer'
+            ])
+        );
     }
 
     /**
@@ -72,7 +66,7 @@ class DrugController extends Controller
      */
     public function show(Request $request, $id)
     {
-        return $this->repository->show($id);
+        return app(ShowDrug::class)->execute(['id' => $id]);
     }
 
     /**
@@ -84,20 +78,15 @@ class DrugController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $request->validate([
+        $parameters = $request->validate([
             'name' => 'string|min:3|max:255',
             'code' => 'integer|min:7|max:7',
             'posology' => 'string|min:3|max:255',
             'prescription_id' => 'integer'
         ]);
+        $parameters['id'] = $id;
 
-        $data = [];
-        if($request->name) $data['name'] = $request->name;
-        if($request->code) $data['code'] = $request->code;
-        if($request->posology) $data['posology'] = $request->posology;
-        if($request->prescription_id) $data['prescription_id'] = $request->prescription_id;
-
-        return $this->repository->update($id, $data);
+        return app(UpdateDrug::class)->execute($parameters);
     }
 
     /**
@@ -107,6 +96,6 @@ class DrugController extends Controller
      */
     public function delete(Request $request, $id)
     {
-        return $this->repository->delete($id);
+        return app(DeleteDrug::class)->execute(['id' => $id]);
     }
 }

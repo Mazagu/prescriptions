@@ -2,18 +2,16 @@
 
 namespace Bluesourcery\Prescription\Http\Controllers;
 
-use Bluesourcery\Prescription\Domain\Repositories\Prescription\PrescriptionRepository;
+use Bluesourcery\Prescription\Domain\Commands\Prescription\ListPrescriptions;
+use Bluesourcery\Prescription\Domain\Commands\Prescription\CreatePrescription;
+use Bluesourcery\Prescription\Domain\Commands\Prescription\FilterPrescriptions;
+use Bluesourcery\Prescription\Domain\Commands\Prescription\UpdatePrescription;
+use Bluesourcery\Prescription\Domain\Commands\Prescription\ShowPrescription;
+use Bluesourcery\Prescription\Domain\Commands\Prescription\DeletePrescription;
 use Illuminate\Http\Request;
 
 class PrescriptionController extends Controller
 {
-    protected $repository;
-
-    public function __construct(PrescriptionRepository $repository)
-    {
-        $this->repository = $repository;
-    }
-
     /**
      * Display a listing of prescriptions.
      *
@@ -21,7 +19,7 @@ class PrescriptionController extends Controller
      */
     public function all()
     {
-        return $this->repository->all();
+        return app(ListPrescriptions::class)->execute();
     }
 
     /**
@@ -32,11 +30,9 @@ class PrescriptionController extends Controller
      */
     public function filter(Request $request)
     {
-        $filters = [
+        return app(FilterPrescriptions::class)->execute([
             'patient_id' => $request->patient_id
-        ];
-
-        return $this->repository->filter($filters);
+        ]);
     }
 
     /**
@@ -48,13 +44,11 @@ class PrescriptionController extends Controller
 
     public function create(Request $request)
     {
-        $request->validate([
-            'patient_id' => 'required|integer'
-        ]);
-
-        return $this->repository->create([
-            'patient_id' => $request->patient_id
-        ]);
+        return app(CreatePrescription::class)->execute(
+            $request->validate([
+                'patient_id' => 'required|integer'
+            ])
+        );
     }
 
     /**
@@ -66,7 +60,7 @@ class PrescriptionController extends Controller
      */
     public function show(Request $request, $id)
     {
-        return $this->repository->show($id);
+        return app(ShowPrescription::class)->execute(['id' => $id]);
     }
 
     /**
@@ -78,14 +72,11 @@ class PrescriptionController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $request->validate([
-            'patient_id' => 'required|integer'
+        $parameters = $request->validate([
+            'patient_id' => 'required|integer'          
         ]);
-
-        $data = [];
-        if($request->patient_id) $data['patient_id'] = $request->patient_id;
-
-        return $this->repository->update($id, $data);
+        $parameters['id'] = $id;
+        return app(UpdatePrescription::class)->execute($parameters);
     }
 
     /**
@@ -95,6 +86,6 @@ class PrescriptionController extends Controller
      */
     public function delete(Request $request, $id)
     {
-        return $this->repository->delete($id);
+        return app(DeletePrescription::class)->execute(['id' => $id]);
     }
 }

@@ -24,9 +24,15 @@ class PatientRepository implements RepositoryInterface
 		return $this->patient->create($patient);
 	}
 
-	public function update(int $id, Array $patient) 
+	public function update(Array $patient) 
 	{
-		return $this->patient->find($id)->update($patient);
+		return $this->patient->find($patient['id'])->update(array_filter($patient,
+				function($key, $value) {
+					return $key != 'id' || !empty($value);
+				},
+				ARRAY_FILTER_USE_BOTH
+			)
+		);
 	}
 
 
