@@ -3,12 +3,12 @@
 namespace Bluesourcery\Prescription\Domain\Commands\Prescription;
 
 use Bluesourcery\Prescription\Domain\Commands\CommandInterface;
-use Bluesourcery\Prescription\Facades\PrescriptionRepository;
+use Bluesourcery\Prescription\Facades\CachingPrescriptionRepository;
 
 class UpdatePrescription implements CommandInterface
 {
 	public function execute(Array $parameters = null)
 	{
-		return PrescriptionRepository::update($parameters);	
+		return CachingPrescriptionRepository::update($parameters);	
 	}
 }

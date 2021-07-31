@@ -3,12 +3,12 @@
 namespace Bluesourcery\Prescription\Domain\Commands\Patient;
 
 use Bluesourcery\Prescription\Domain\Commands\CommandInterface;
-use Bluesourcery\Prescription\Facades\PatientRepository;
+use Bluesourcery\Prescription\Facades\CachingPatientRepository;
 
 class DeletePatient implements CommandInterface
 {
 	public function execute(Array $parameters = null)
 	{
-		return PatientRepository::delete($parameters['id']);
+		return CachingPatientRepository::delete($parameters['id']);
 	}
 }
