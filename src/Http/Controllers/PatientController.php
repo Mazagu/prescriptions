@@ -7,6 +7,13 @@ use Illuminate\Http\Request;
 
 class PatientController extends Controller
 {
+    protected $repository;
+
+    public function __construct(PatientRepository $repository)
+    {
+        $this->repository = $repository;
+    }
+
     /**
      * Display a listing of patients.
      *
@@ -14,8 +21,7 @@ class PatientController extends Controller
      */
     public function all()
     {
-        $repository = new PatientRepository();
-        return $repository->all();
+        return $this->repository->all();
     }
 
     /**
@@ -26,14 +32,13 @@ class PatientController extends Controller
      */
     public function filter(Request $request)
     {
-        $repository = new PatientRepository();
         $filters = [
             'name' => $request->name,
             'lastname' => $request->lastname,
             'id_card' => $request->id_card
         ];
 
-        return $repository->filter($filters);
+        return $this->repository->filter($filters);
     }
 
     /**
@@ -51,9 +56,7 @@ class PatientController extends Controller
             'id_card' => 'required|string|min:3|max:255'
         ]);
 
-        $repository = new PatientRepository();
-
-        return $repository->create([
+        return $this->repository->create([
             'name' => $request->name,
             'lastname' => $request->lastname,
             'id_card' => $request->id_card
@@ -69,8 +72,7 @@ class PatientController extends Controller
      */
     public function show(Request $request, $id)
     {
-        $repository = new PatientRepository();
-        return $repository->show($id);
+        return $this->repository->show($id);
     }
 
     /**
@@ -88,13 +90,12 @@ class PatientController extends Controller
             'id_card' => 'string|min:3|max:255'
         ]);
 
-        $repository = new PatientRepository();
         $data = [];
         if($request->name) $data['name'] = $request->name;
         if($request->lastname) $data['lastname'] = $request->lastname;
         if($request->id_card) $data['id_card'] = $request->id_card;
 
-        return $repository->update($id, $data);
+        return $this->repository->update($id, $data);
     }
 
     /**
@@ -104,8 +105,6 @@ class PatientController extends Controller
      */
     public function delete(Request $request, $id)
     {
-        $repository = new PatientRepository();
-
-        return $repository->delete($id);
+        return $this->repository->delete($id);
     }
 }

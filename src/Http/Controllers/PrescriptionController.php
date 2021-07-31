@@ -7,6 +7,13 @@ use Illuminate\Http\Request;
 
 class PrescriptionController extends Controller
 {
+    protected $repository;
+
+    public function __construct(PrescriptionRepository $repository)
+    {
+        $this->repository = $repository;
+    }
+
     /**
      * Display a listing of prescriptions.
      *
@@ -14,8 +21,7 @@ class PrescriptionController extends Controller
      */
     public function all()
     {
-        $repository = new PrescriptionRepository();
-        return $repository->all();
+        return $this->repository->all();
     }
 
     /**
@@ -26,12 +32,11 @@ class PrescriptionController extends Controller
      */
     public function filter(Request $request)
     {
-        $repository = new PrescriptionRepository();
         $filters = [
             'patient_id' => $request->patient_id
         ];
 
-        return $repository->filter($filters);
+        return $this->repository->filter($filters);
     }
 
     /**
@@ -47,9 +52,7 @@ class PrescriptionController extends Controller
             'patient_id' => 'required|integer'
         ]);
 
-        $repository = new PrescriptionRepository();
-
-        return $repository->create([
+        return $this->repository->create([
             'patient_id' => $request->patient_id
         ]);
     }
@@ -63,8 +66,7 @@ class PrescriptionController extends Controller
      */
     public function show(Request $request, $id)
     {
-        $repository = new PrescriptionRepository();
-        return $repository->show($id);
+        return $this->repository->show($id);
     }
 
     /**
@@ -80,11 +82,10 @@ class PrescriptionController extends Controller
             'patient_id' => 'required|integer'
         ]);
 
-        $repository = new PrescriptionRepository();
         $data = [];
         if($request->patient_id) $data['patient_id'] = $request->patient_id;
 
-        return $repository->update($id, $data);
+        return $this->repository->update($id, $data);
     }
 
     /**
@@ -94,8 +95,6 @@ class PrescriptionController extends Controller
      */
     public function delete(Request $request, $id)
     {
-        $repository = new PrescriptionRepository();
-
-        return $repository->delete($id);
+        return $this->repository->delete($id);
     }
 }
