@@ -5,12 +5,12 @@ namespace Bluesourcery\Prescription\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class PrescriptionLog extends Model
+class DrugLog extends Model
 {
     use HasFactory;
 
     protected $fillable = [
-        'prescription_id',
+        'drug_id',
         'action',
         'parameters'
     ];

@@ -14,6 +14,8 @@ class PrescriptionServiceProvider extends ServiceProvider
 {
   public function register()
   {
+    $this->mergeConfigFrom(__DIR__.'/../config/config.php', 'prescription');
+
     $this->app->bind('patientRepository', function($app) {
         return new PatientRepository();
     });
@@ -46,5 +48,11 @@ class PrescriptionServiceProvider extends ServiceProvider
   {
     $this->loadMigrationsFrom(__DIR__ . '/../database/migrations');
     $this->loadRoutesFrom(__DIR__.'/../routes/api.php');
+
+    if ($this->app->runningInConsole()) {
+        $this->publishes([
+          __DIR__.'/../config/config.php' => config_path('prescription.php'),
+        ], 'config');
+    }
   }
 }
