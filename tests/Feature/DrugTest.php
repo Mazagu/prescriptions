@@ -6,6 +6,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Bluesourcery\Prescription\Tests\TestCase;
 use Bluesourcery\Prescription\Models\Drug;
 use Bluesourcery\Prescription\Models\Prescription;
+use Bluesourcery\Prescription\Models\DrugLog;
 
 class DrugTest extends TestCase
 {
@@ -51,6 +52,9 @@ class DrugTest extends TestCase
 
         $drug = Drug::where('prescription_id', $prescription->id)->first();
         $this->assertEquals($drug->prescription_id, $prescription->id);
+
+        $drug_log = DrugLog::where('drug_id', $drug->id)->get();
+        $this->assertEquals($drug_log[0]->action, 'created');
     }
 
     /**
@@ -67,18 +71,21 @@ class DrugTest extends TestCase
     /**
      * @test
      */
-    public function delete_patient()
+    public function delete_drug()
     {
         $drugs = Drug::factory()->count(1)->create();
         $response = $this->delete('api/drug/' . $drugs[0]->id);
         $response->assertStatus(200);
         $this->assertEquals(Drug::count(), 0);
+
+        $drug_log = DrugLog::where('drug_id', $drugs[0]->id)->get();
+        $this->assertEquals($drug_log[0]->action, 'deleted');
     }
 
     /**
      * @test
      */
-    public function update_patient()
+    public function update_drug()
     {
         $drugs = Drug::factory()->count(1)->create();
         $response = $this->put(
@@ -87,5 +94,8 @@ class DrugTest extends TestCase
         );
         $response->assertStatus(200);
         $this->assertEquals(Drug::find($drugs[0]->id)->name, 'Blue');
+
+        $drug_log = DrugLog::where('drug_id', $drugs[0]->id)->get();
+        $this->assertEquals($drug_log[0]->action, 'updated');
     }
 }

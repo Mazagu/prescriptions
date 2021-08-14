@@ -2,12 +2,12 @@
 
 namespace Bluesourcery\Prescription\Http\Controllers;
 
-use Bluesourcery\Prescription\Domain\Commands\Prescription\ListPrescriptions;
-use Bluesourcery\Prescription\Domain\Commands\Prescription\CreatePrescription;
-use Bluesourcery\Prescription\Domain\Commands\Prescription\FilterPrescriptions;
-use Bluesourcery\Prescription\Domain\Commands\Prescription\UpdatePrescription;
-use Bluesourcery\Prescription\Domain\Commands\Prescription\ShowPrescription;
-use Bluesourcery\Prescription\Domain\Commands\Prescription\DeletePrescription;
+use Bluesourcery\Prescription\Domain\Managers\Prescription\ListPrescriptions;
+use Bluesourcery\Prescription\Domain\Managers\Prescription\CreatePrescription;
+use Bluesourcery\Prescription\Domain\Managers\Prescription\FilterPrescriptions;
+use Bluesourcery\Prescription\Domain\Managers\Prescription\UpdatePrescription;
+use Bluesourcery\Prescription\Domain\Managers\Prescription\ShowPrescription;
+use Bluesourcery\Prescription\Domain\Managers\Prescription\DeletePrescription;
 use Illuminate\Http\Request;
 
 class PrescriptionController extends Controller

@@ -2,12 +2,12 @@
 
 namespace Bluesourcery\Prescription\Http\Controllers;
 
-use Bluesourcery\Prescription\Domain\Commands\Drug\ListDrugs;
-use Bluesourcery\Prescription\Domain\Commands\Drug\FilterDrugs;
-use Bluesourcery\Prescription\Domain\Commands\Drug\CreateDrug;
-use Bluesourcery\Prescription\Domain\Commands\Drug\ShowDrug;
-use Bluesourcery\Prescription\Domain\Commands\Drug\UpdateDrug;
-use Bluesourcery\Prescription\Domain\Commands\Drug\DeleteDrug;
+use Bluesourcery\Prescription\Domain\Managers\Drug\ListDrugs;
+use Bluesourcery\Prescription\Domain\Managers\Drug\FilterDrugs;
+use Bluesourcery\Prescription\Domain\Managers\Drug\CreateDrug;
+use Bluesourcery\Prescription\Domain\Managers\Drug\ShowDrug;
+use Bluesourcery\Prescription\Domain\Managers\Drug\UpdateDrug;
+use Bluesourcery\Prescription\Domain\Managers\Drug\DeleteDrug;
 use Illuminate\Http\Request;
 
 class DrugController extends Controller

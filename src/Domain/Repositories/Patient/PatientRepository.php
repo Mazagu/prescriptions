@@ -24,20 +24,31 @@ class PatientRepository implements RepositoryInterface
 		return $this->patient->create($patient);
 	}
 
-	public function update(Array $patient) 
+	public function update(Array $entity) 
 	{
-		return $this->patient->find($patient['id'])->update(array_filter($patient,
+		$patient = $this->patient->find($entity['id']);
+		$update = $patient->update(array_filter($entity,
 				function($key, $value) {
 					return $key != 'id' || !empty($value);
 				},
 				ARRAY_FILTER_USE_BOTH
 			)
 		);
+		if($update) {
+			return $patient;
+		} else {
+			return false;
+		}
 	}
 
 
 	public function delete(int $id) {
-		return $this->patient->where('id', $id)->delete();
+		$patient = $this->patient->find($id);
+		if($this->patient->where('id', $id)->delete()) {
+			return $patient;
+		} else {
+			return false;
+		}
 	}
 
 	public function filter(Array $filters) 

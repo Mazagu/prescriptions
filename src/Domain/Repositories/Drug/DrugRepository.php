@@ -24,20 +24,31 @@ class DrugRepository implements RepositoryInterface
 		return $this->drug->create($drug);
 	}
 
-	public function update(Array $drug) 
+	public function update(Array $entity) 
 	{
-		return $this->drug->find($drug['id'])->update(array_filter($drug,
+		$drug = $this->drug->find($entity['id']);
+		$update = $drug->update(array_filter($entity,
 				function($key, $value) {
 					return $key != 'id' || !empty($value);
 				},
 				ARRAY_FILTER_USE_BOTH
 			)
 		);
+		if($update) {
+			return $drug;
+		} else {
+			return false;
+		}
 	}
 
 
 	public function delete(int $id) {
-		return $this->drug->where('id', $id)->delete();
+		$drug = $this->drug->find($id);
+		if($this->drug->where('id', $id)->delete()) {
+			return $drug;
+		} else {
+			return false;
+		}
 	}
 
 	public function filter(Array $filters) 

@@ -9,6 +9,9 @@ use Bluesourcery\Prescription\Domain\Repositories\Prescription\PrescriptionRepos
 use Bluesourcery\Prescription\Domain\Repositories\Prescription\CachingPrescriptionRepository;
 use Bluesourcery\Prescription\Domain\Repositories\Drug\DrugRepository;
 use Bluesourcery\Prescription\Domain\Repositories\Drug\CachingDrugRepository;
+use Bluesourcery\Prescription\Domain\Audition\PatientAuditor;
+use Bluesourcery\Prescription\Domain\Audition\PrescriptionAuditor;
+use Bluesourcery\Prescription\Domain\Audition\DrugAuditor;
 
 class PrescriptionServiceProvider extends ServiceProvider
 {
@@ -42,6 +45,18 @@ class PrescriptionServiceProvider extends ServiceProvider
         $drugRepository = new DrugRepository();
         return new CachingDrugRepository($drugRepository);
     });
+
+    $this->app->bind('patientAuditor', function($app) {
+        return new PatientAuditor();
+    });
+
+    $this->app->bind('prescriptionAuditor', function($app) {
+        return new PrescriptionAuditor();
+    });
+
+    $this->app->bind('drugAuditor', function($app) {
+        return new DrugAuditor();
+    });
   }
 
   public function boot()
@@ -53,6 +68,10 @@ class PrescriptionServiceProvider extends ServiceProvider
         $this->publishes([
           __DIR__.'/../config/config.php' => config_path('prescription.php'),
         ], 'config');
+
+        $this->publishes([
+            __DIR__.'/../resources/lang/en/prescription.php' => resource_path('lang/en/prescription.php'),
+        ], 'locale');
     }
   }
 }

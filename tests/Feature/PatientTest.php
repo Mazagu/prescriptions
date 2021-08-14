@@ -5,6 +5,7 @@ namespace Bluesourcery\Prescription\Tests\Unit;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Bluesourcery\Prescription\Tests\TestCase;
 use Bluesourcery\Prescription\Models\Patient;
+use Bluesourcery\Prescription\Models\PatientLog;
 
 class PatientTest extends TestCase
 {
@@ -47,6 +48,9 @@ class PatientTest extends TestCase
 
         $patient = Patient::where('name', 'Blue')->first();
         $this->assertEquals($patient->name, 'Blue');
+
+        $patient_log = PatientLog::where('patient_id', $patient->id)->get();
+        $this->assertEquals($patient_log[0]->action, 'created');
     }
 
     /**
@@ -69,6 +73,9 @@ class PatientTest extends TestCase
         $response = $this->delete('api/patient/' . $patients[0]->id);
         $response->assertStatus(200);
         $this->assertEquals(Patient::count(), 0);
+
+        $patient_log = PatientLog::where('patient_id', $patients[0]->id)->get();
+        $this->assertEquals($patient_log[0]->action, 'deleted');
     }
 
     /**
@@ -80,5 +87,8 @@ class PatientTest extends TestCase
         $response = $this->put('api/patient/' . $patients[0]->id, ['name' => "Blue"]);
         $response->assertStatus(200);
         $this->assertEquals(Patient::find($patients[0]->id)->name, "Blue");
+
+        $patient_log = PatientLog::where('patient_id', $patients[0]->id)->get();
+        $this->assertEquals($patient_log[0]->action, 'updated');
     }
 }

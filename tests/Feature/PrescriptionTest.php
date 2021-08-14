@@ -6,6 +6,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Bluesourcery\Prescription\Tests\TestCase;
 use Bluesourcery\Prescription\Models\Patient;
 use Bluesourcery\Prescription\Models\Prescription;
+use Bluesourcery\Prescription\Models\PrescriptionLog;
 
 class PrescriptionTest extends TestCase
 {
@@ -48,6 +49,9 @@ class PrescriptionTest extends TestCase
 
         $prescription = Prescription::where('patient_id', $patient->id)->first();
         $this->assertEquals($prescription->id, $patient->id);
+
+        $prescription_log = PrescriptionLog::where('prescription_id', $prescription->id)->get();
+        $this->assertEquals($prescription_log[0]->action, 'created');
     }
 
     /**
@@ -70,6 +74,9 @@ class PrescriptionTest extends TestCase
         $response = $this->delete('api/prescription/' . $prescriptions[0]->id);
         $response->assertStatus(200);
         $this->assertEquals(Prescription::count(), 0);
+
+        $prescription_log = PrescriptionLog::where('prescription_id', $prescriptions[0]->id)->get();
+        $this->assertEquals($prescription_log[0]->action, 'deleted');
     }
 
     /**

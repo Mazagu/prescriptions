@@ -24,20 +24,30 @@ class PrescriptionRepository implements RepositoryInterface
 		return $this->prescription->create($prescription);
 	}
 
-	public function update(Array $prescription) 
+	public function update(Array $entity) 
 	{
-		return $this->prescription->find($prescription['id'])->update(array_filter($prescription,
+		$prescription = $this->prescription->find($entity['id']);
+		$update = $prescription->update(array_filter($entity,
 				function($key, $value) {
 					return $key != 'id' || !empty($value);
 				},
 				ARRAY_FILTER_USE_BOTH
 			)
 		);
+		if($update) {
+			return $prescription;
+		} else {
+			return false;
+		}
 	}
 
-
 	public function delete(int $id) {
-		return $this->prescription->where('id', $id)->delete();
+		$prescription = $this->prescription->find($id);
+		if($this->prescription->where('id', $id)->delete()) {
+			return $prescription;
+		} else {
+			return false;
+		}
 	}
 
 	public function filter(Array $filters) 
