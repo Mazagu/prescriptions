@@ -2,30 +2,26 @@
 
 namespace Bluesourcery\Prescription\Domain\Managers\Drug;
 
+use Bluesourcery\Prescription\Models\ErrorMessage;
 use Bluesourcery\Prescription\Models\Drug;
-use Bluesourcery\Prescription\Domain\Managers\ManagerInterface;
+use Bluesourcery\Prescription\Domain\Managers\Manager;
 use Bluesourcery\Prescription\Facades\CachingDrugRepository;
 use Bluesourcery\Prescription\Facades\DrugAuditor;
 
-class UpdateDrug implements ManagerInterface
+class UpdateDrug extends Manager
 {
-	public function execute(Array $parameters = null)
+	protected function _action($parameters)
 	{
-		if($drug = CachingDrugRepository::update($parameters)) {
-			return $this->_success($drug);
+		if($result = CachingDrugRepository::update($parameters)) {
+			return $this->_success($result);
 		} else {
-			$this->_failure();
-		}		
+			throw new \Exception(__('prescription.drug.update.error'));	
+		}
 	}
 	
-	private function _success(Drug $drug)
+	protected function _success($drug)
 	{
 		DrugAuditor::updated($drug);
 		return $drug;
-	}
-
-	private function _failure()
-	{
-		throw new \Exception(__('prescription.drug.update.error'));
 	}
 }

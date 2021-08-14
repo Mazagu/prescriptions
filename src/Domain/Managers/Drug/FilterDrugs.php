@@ -2,27 +2,23 @@
 
 namespace Bluesourcery\Prescription\Domain\Managers\Drug;
 
-use Bluesourcery\Prescription\Domain\Managers\ManagerInterface;
+use Bluesourcery\Prescription\Models\ErrorMessage;
+use Bluesourcery\Prescription\Domain\Managers\Manager;
 use Bluesourcery\Prescription\Facades\CachingDrugRepository;
 
-class FilterDrugs implements ManagerInterface
+class FilterDrugs extends Manager
 {
-	public function execute(Array $parameters = null)
+	protected function _action($parameters)
 	{
-		if($drugs = CachingDrugRepository::filter($parameters)) {
-			return $this->_success($drugs);
+		if($result = CachingDrugRepository::filter($parameters)) {
+			return $this->_success($result);
 		} else {
-			return false;
+			throw new \Exception(__('prescription.drug.list.error'));	
 		}
 	}
 	
-	private function _success($drugs)
+	protected function _success($drugs)
 	{
 		return $drugs;
-	}
-
-	private function _failure()
-	{
-		throw new \Exception(__('prescription.drug.list.error'));
 	}
 }

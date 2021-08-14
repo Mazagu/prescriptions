@@ -2,30 +2,26 @@
 
 namespace Bluesourcery\Prescription\Domain\Managers\Prescription;
 
+use Bluesourcery\Prescription\Models\ErrorMessage;
 use Bluesourcery\Prescription\Models\Prescription;
-use Bluesourcery\Prescription\Domain\Managers\ManagerInterface;
+use Bluesourcery\Prescription\Domain\Managers\Manager;
 use Bluesourcery\Prescription\Facades\CachingPrescriptionRepository;
 use Bluesourcery\Prescription\Facades\PrescriptionAuditor;
 
-class CreatePrescription implements ManagerInterface
+class CreatePrescription extends Manager
 {
-	public function execute(Array $parameters = null)
+	protected function _action($parameters)
 	{
-		if($prescription = CachingPrescriptionRepository::create($parameters)) {
-			return $this->_success($prescription);
+		if($result = CachingPrescriptionRepository::create($parameters)) {
+			return $this->_success($result);
 		} else {
-			$this->_failure();
-		}	
+			throw new \Exception(__('prescription.prescription.create.error'));	
+		}
 	}
 
-	private function _success(Prescription $prescription)
+	protected function _success($prescription)
 	{
 		PrescriptionAuditor::created($prescription);
 		return $prescription;
-	}
-
-	private function _failure()
-	{
-		throw new \Exception(__('prescription.prescription.create.error'));
 	}
 }

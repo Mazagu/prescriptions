@@ -2,27 +2,23 @@
 
 namespace Bluesourcery\Prescription\Domain\Managers\Prescription;
 
-use Bluesourcery\Prescription\Domain\Managers\ManagerInterface;
+use Bluesourcery\Prescription\Models\ErrorMessage;
+use Bluesourcery\Prescription\Domain\Managers\Manager;
 use Bluesourcery\Prescription\Facades\CachingPrescriptionRepository;
 
-class ShowPrescription implements ManagerInterface
+class ShowPrescription extends Manager
 {
-	public function execute(Array $parameters = null)
+	protected function _action($parameters)
 	{
-		if($prescriptions = CachingPrescriptionRepository::show($parameters['id'])) {
-			return $this->_success($prescriptions);
+		if($result = CachingPrescriptionRepository::show($parameters['id'])) {
+			return $this->_success($result);
 		} else {
-			$this->_failure();
+			throw new \Exception(__('prescription.prescription.show.error'));	
 		}
 	}
 
-	private function _success($prescription)
+	protected function _success($prescription)
 	{
 		return $prescription;
-	}
-
-	private function _failure()
-	{
-		throw new \Exception(__('prescription.prescription.show.error'));
 	}
 }

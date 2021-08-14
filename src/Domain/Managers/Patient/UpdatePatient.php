@@ -2,30 +2,26 @@
 
 namespace Bluesourcery\Prescription\Domain\Managers\Patient;
 
+use Bluesourcery\Prescription\Models\ErrorMessage;
 use Bluesourcery\Prescription\Models\Patient;
-use Bluesourcery\Prescription\Domain\Managers\ManagerInterface;
+use Bluesourcery\Prescription\Domain\Managers\Manager;
 use Bluesourcery\Prescription\Facades\CachingPatientRepository;
 use Bluesourcery\Prescription\Facades\PatientAuditor;
 
-class UpdatePatient implements ManagerInterface
+class UpdatePatient extends Manager
 {
-	public function execute(Array $parameters = null)
+	protected function _action($parameters)
 	{
-		if($patient = CachingPatientRepository::update($parameters)) {
-			return $this->_success($patient);
+		if($result = CachingPatientRepository::update($parameters)) {
+			return $this->_success($result);
 		} else {
-			$this->_failure();
+			throw new \Exception(__('prescription.patient.update.error'));	
 		}
 	}
 	
-	private function _success(Patient $patient)
+	protected function _success($patient)
 	{
 		PatientAuditor::updated($patient);
 		return $patient;
-	}
-
-	private function _failure()
-	{
-		throw new \Exception(__('prescription.patient.update.error'));	
 	}
 }
