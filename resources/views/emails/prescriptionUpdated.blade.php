@@ -1,0 +1,1 @@
+<p>{{__('prescription.update.email', ['id' => $prescription->id])}}</p>

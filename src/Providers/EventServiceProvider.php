@@ -21,36 +21,54 @@ use Bluesourcery\Prescription\Listeners\AuditPrescriptionUpdated;
 use Bluesourcery\Prescription\Listeners\AuditDrugCreated;
 use Bluesourcery\Prescription\Listeners\AuditDrugDeleted;
 use Bluesourcery\Prescription\Listeners\AuditDrugUpdated;
+use Bluesourcery\Prescription\Listeners\EmailPatientCreated;
+use Bluesourcery\Prescription\Listeners\EmailPatientDeleted;
+use Bluesourcery\Prescription\Listeners\EmailPatientUpdated;
+use Bluesourcery\Prescription\Listeners\EmailDrugCreated;
+use Bluesourcery\Prescription\Listeners\EmailDrugDeleted;
+use Bluesourcery\Prescription\Listeners\EmailDrugUpdated;
+use Bluesourcery\Prescription\Listeners\EmailPrescriptionCreated;
+use Bluesourcery\Prescription\Listeners\EmailPrescriptionDeleted;
+use Bluesourcery\Prescription\Listeners\EmailPrescriptionUpdated;
 
 class EventServiceProvider extends ServiceProvider
 {
 	protected $listen = [
 		PatientCreated::class => [
-			AuditPatientCreated::class
+			AuditPatientCreated::class,
+			EmailPatientCreated::class,
 		],
 		PatientDeleted::class => [
-			AuditPatientDeleted::class
+			AuditPatientDeleted::class,
+			EmailPatientDeleted::class,
 		],
 		PatientUpdated::class => [
-			AuditPatientUpdated::class
+			AuditPatientUpdated::class,
+			EmailPatientUpdated::class,
 		],
 		PrescriptionCreated::class => [
-			AuditPrescriptionCreated::class
+			AuditPrescriptionCreated::class,
+			EmailPrescriptionCreated::class,
 		],
 		PrescriptionDeleted::class => [
-			AuditPrescriptionDeleted::class
+			AuditPrescriptionDeleted::class,
+			EmailPrescriptionDeleted::class,
 		],
 		PrescriptionUpdated::class => [
-			AuditPrescriptionUpdated::class
+			AuditPrescriptionUpdated::class,
+			EmailPrescriptionUpdated::class,
 		],
 		DrugCreated::class => [
-			AuditDrugCreated::class
+			AuditDrugCreated::class,
+			EmailDrugCreated::class,
 		],
 		DrugDeleted::class => [
-			AuditDrugDeleted::class
+			AuditDrugDeleted::class,
+			EmailDrugDeleted::class,
 		],
 		DrugUpdated::class => [
-			AuditDrugUpdated::class
+			AuditDrugUpdated::class,
+			EmailDrugUpdated::class,
 		],
 	];
 

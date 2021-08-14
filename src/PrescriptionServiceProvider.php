@@ -65,6 +65,7 @@ class PrescriptionServiceProvider extends ServiceProvider
   {
     $this->loadMigrationsFrom(__DIR__ . '/../database/migrations');
     $this->loadRoutesFrom(__DIR__.'/../routes/api.php');
+    $this->loadViewsFrom(__DIR__.'/../resources/views', 'prescription');
 
     if ($this->app->runningInConsole()) {
         $this->publishes([

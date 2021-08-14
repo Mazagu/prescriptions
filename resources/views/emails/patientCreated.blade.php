@@ -1,0 +1,1 @@
+<p>{{__('patient.create.email', ['name' => $patient->name])}}</p>
