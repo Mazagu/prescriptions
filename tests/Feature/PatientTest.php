@@ -6,6 +6,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Bluesourcery\Prescription\Tests\TestCase;
 use Bluesourcery\Prescription\Models\Patient;
 use Bluesourcery\Prescription\Models\PatientLog;
+use Bluesourcery\Prescription\Events\PatientCreated;
 
 class PatientTest extends TestCase
 {
@@ -49,8 +50,8 @@ class PatientTest extends TestCase
         $patient = Patient::where('name', 'Blue')->first();
         $this->assertEquals($patient->name, 'Blue');
 
-        $patient_log = PatientLog::where('patient_id', $patient->id)->get();
-        $this->assertEquals($patient_log[0]->action, 'created');
+        $patient_log = PatientLog::where('patient_id', $patient->id)->first();
+        $this->assertEquals($patient_log->action, 'created');
     }
 
     /**

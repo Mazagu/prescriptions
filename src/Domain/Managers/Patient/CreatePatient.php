@@ -6,7 +6,7 @@ use Bluesourcery\Prescription\Models\ErrorMessage;
 use Bluesourcery\Prescription\Models\Patient;
 use Bluesourcery\Prescription\Domain\Managers\Manager;
 use Bluesourcery\Prescription\Facades\CachingPatientRepository;
-use Bluesourcery\Prescription\Facades\PatientAuditor;
+use Bluesourcery\Prescription\Events\PatientCreated;
 
 class CreatePatient extends Manager
 {
@@ -21,7 +21,7 @@ class CreatePatient extends Manager
 	
 	protected function _success($patient)
 	{
-		PatientAuditor::created($patient);
+		event(new PatientCreated($patient));
 		return $patient;
 	}
 }

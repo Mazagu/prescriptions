@@ -12,12 +12,14 @@ use Bluesourcery\Prescription\Domain\Repositories\Drug\CachingDrugRepository;
 use Bluesourcery\Prescription\Domain\Audition\PatientAuditor;
 use Bluesourcery\Prescription\Domain\Audition\PrescriptionAuditor;
 use Bluesourcery\Prescription\Domain\Audition\DrugAuditor;
+use Bluesourcery\Prescription\Providers\EventServiceProvider;
 
 class PrescriptionServiceProvider extends ServiceProvider
 {
   public function register()
   {
     $this->mergeConfigFrom(__DIR__.'/../config/config.php', 'prescription');
+    $this->app->register(EventServiceProvider::class);
 
     $this->app->bind('patientRepository', function($app) {
         return new PatientRepository();

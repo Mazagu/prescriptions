@@ -6,7 +6,7 @@ use Bluesourcery\Prescription\Models\ErrorMessage;
 use Bluesourcery\Prescription\Models\Patient;
 use Bluesourcery\Prescription\Domain\Managers\Manager;
 use Bluesourcery\Prescription\Facades\CachingPatientRepository;
-use Bluesourcery\Prescription\Facades\PatientAuditor;
+use Bluesourcery\Prescription\Events\PatientDeleted;
 
 class DeletePatient extends Manager
 {
@@ -21,7 +21,7 @@ class DeletePatient extends Manager
 	
 	protected function _success($patient)
 	{
-		PatientAuditor::deleted($patient);
+		event(new PatientDeleted($patient));
 		return $patient;
 	}
 }

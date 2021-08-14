@@ -6,7 +6,7 @@ use Bluesourcery\Prescription\Models\ErrorMessage;
 use Bluesourcery\Prescription\Models\Prescription;
 use Bluesourcery\Prescription\Domain\Managers\Manager;
 use Bluesourcery\Prescription\Facades\CachingPrescriptionRepository;
-use Bluesourcery\Prescription\Facades\PrescriptionAuditor;
+use Bluesourcery\Prescription\Events\PrescriptionUpdated;
 
 class UpdatePrescription extends Manager
 {
@@ -21,7 +21,7 @@ class UpdatePrescription extends Manager
 
 	protected function _success($prescription)
 	{
-		PrescriptionAuditor::updated($prescription);
+		event(new PrescriptionUpdated($prescription));
 		return $prescription;
 	}
 }

@@ -50,8 +50,8 @@ class PrescriptionTest extends TestCase
         $prescription = Prescription::where('patient_id', $patient->id)->first();
         $this->assertEquals($prescription->id, $patient->id);
 
-        $prescription_log = PrescriptionLog::where('prescription_id', $prescription->id)->get();
-        $this->assertEquals($prescription_log[0]->action, 'created');
+        $prescription_log = PrescriptionLog::where('prescription_id', $prescription->id)->first();
+        $this->assertEquals($prescription_log->action, 'created');
     }
 
     /**
@@ -75,8 +75,8 @@ class PrescriptionTest extends TestCase
         $response->assertStatus(200);
         $this->assertEquals(Prescription::count(), 0);
 
-        $prescription_log = PrescriptionLog::where('prescription_id', $prescriptions[0]->id)->get();
-        $this->assertEquals($prescription_log[0]->action, 'deleted');
+        $prescription_log = PrescriptionLog::where('prescription_id', $prescriptions[0]->id)->first();
+        $this->assertEquals($prescription_log->action, 'deleted');
     }
 
     /**

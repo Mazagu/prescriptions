@@ -6,7 +6,7 @@ use Bluesourcery\Prescription\Models\ErrorMessage;
 use Bluesourcery\Prescription\Models\Drug;
 use Bluesourcery\Prescription\Domain\Managers\Manager;
 use Bluesourcery\Prescription\Facades\CachingDrugRepository;
-use Bluesourcery\Prescription\Facades\DrugAuditor;
+use Bluesourcery\Prescription\Events\DrugCreated;
 
 class CreateDrug extends Manager
 {
@@ -21,7 +21,7 @@ class CreateDrug extends Manager
 	
 	protected function _success($drug)
 	{
-		DrugAuditor::created($drug);
+		event(new DrugCreated($drug));
 		return $drug;
 	}
 
