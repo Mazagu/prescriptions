@@ -1,0 +1,28 @@
+<?php 
+
+return [
+	'patient.create.error' => 'El paciente no se ha creado',
+	'patient.create.email' => 'Se ha creado el paciente :name',
+	'patient.update.error' => 'El paciente no se ha actualizado',
+	'patient.update.email' => 'Se ha actualizado el paciente :name',
+	'patient.delete.error' => 'El paciente no se ha eliminado',
+	'patient.delete.email' => 'Se ha eliminado el paciente :name',
+	'patient.list.error' => 'No se pueden listar los pacientes',
+	'patient.show.error' => 'No se puede mostrar el paciente',
+	'prescription.create.error' => 'La prescipción no se ha creado',
+	'prescription.create.email' => 'Se ha creado la prescipción :id',
+	'prescription.update.error' => 'La prescipción no se ha actualizado',
+	'prescription.update.email' => 'Se ha actualizado la prescipción :id',
+	'prescription.delete.error' => 'La prescipción se ha eliminado',
+	'prescription.delete.email' => 'Se ha eliminado la prescipción :id',
+	'prescription.list.error' => 'No se pueden listar las prescripciones',
+	'prescription.show.error' => 'No se puede mostrar la prescipción',	
+	'drug.create.error' => 'La medicina no se ha creado',
+	'drug.create.email' => 'Se ha creado la medicina :name',
+	'drug.update.error' => 'La medicina no se ha actualizado',
+	'drug.update.email' => 'Se ha actualizado la medicina :name',
+	'drug.delete.error' => 'La medicina no se ha eliminado',
+	'drug.delete.email' => 'Se ha eliminado la medicina :name',
+	'drug.list.error' => 'No se pueden listar las medicinas',
+	'drug.show.error' => 'No se puede mostrar la medicina',
+];

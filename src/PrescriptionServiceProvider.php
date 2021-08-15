@@ -74,6 +74,7 @@ class PrescriptionServiceProvider extends ServiceProvider
 
         $this->publishes([
             __DIR__.'/../resources/lang/en/prescription.php' => resource_path('lang/en/prescription.php'),
+            __DIR__.'/../resources/lang/es/prescription.php' => resource_path('lang/es/prescription.php'),
         ], 'locale');
     }
   }
