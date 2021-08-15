@@ -20,6 +20,6 @@ class DrugDeletedMail extends Mailable
 
 	public function build()
 	{
-		return $this->view('drug::emails.drugDeleted');
+		return $this->view('prescription::emails.drugDeleted');
 	}
 }

@@ -1,1 +1,1 @@
-<p>{{__('drug.delete.email', ['name' => $drug->name])}}</p>
+<p>{{__('prescription.drug.delete.email', ['name' => $drug->name])}}</p>

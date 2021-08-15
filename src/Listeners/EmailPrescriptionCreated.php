@@ -4,7 +4,7 @@ namespace Bluesourcery\Prescription\Listeners;
 
 use Illuminate\Support\Facades\Mail;
 use Bluesourcery\Prescription\Events\PrescriptionCreated;
-use Bluesourcery\Prescription\Mail\EmailPrescriptionCreated as Email;
+use Bluesourcery\Prescription\Mail\PrescriptionCreatedMail as Email;
 
 class EmailPrescriptionCreated
 {

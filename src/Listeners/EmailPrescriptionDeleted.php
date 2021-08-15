@@ -4,7 +4,7 @@ namespace Bluesourcery\Prescription\Listeners;
 
 use Illuminate\Support\Facades\Mail;
 use Bluesourcery\Prescription\Events\PrescriptionDeleted;
-use Bluesourcery\Prescription\Mail\EmailPrescriptionDeleted as Email;
+use Bluesourcery\Prescription\Mail\PrescriptionDeletedMail as Email;
 
 class EmailPrescriptionDeleted
 {
